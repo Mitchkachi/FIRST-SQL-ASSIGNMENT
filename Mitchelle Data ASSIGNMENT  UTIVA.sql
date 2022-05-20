@@ -1,9 +1,11 @@
--- Profit worth of the breweries for both anglophone and francophone territories
+-- SECTION A      PROFIT ANALYSIS
+
+-- 1) Profit worth of the breweries for both anglophone and francophone territories
 
 select sum("PROFIT") AS "TOTAL_PROFIT"
 FROM "brewery_data";
 
--- Compare the total profit between anglo and franco
+-- 2) Compare the total profit between anglo and franco
 
 select distinct "COUNTRIES"
 FROM "brewery_data";
@@ -16,7 +18,7 @@ else 'Francophone' end as "TERRITORY"
 FROM "brewery_data") as "tab1"
 GROUP BY 1;
 
---  Country that generated the highest profit in 2019
+-- 3) Country that generated the highest profit in 2019
 
 SELECT "COUNTRIES","YEARS", MAX("PROFIT") AS "HIGHEST_PROFIT"
 FROM "brewery_data"
@@ -25,7 +27,7 @@ group by "COUNTRIES","YEARS"
 ORDER BY 2
 limit 1;
 
--- find the year with the highest profit
+-- 4)  find the year with the highest profit
  
  SELECT "YEARS", MAX("PROFIT") AS "HIGHEST_PROFIT"
  FROM "brewery_data"
@@ -33,7 +35,7 @@ limit 1;
  order by 2 desc
 limit 1;
 
---  month in the three years was the least profit generated
+-- 5)   month in the three years was the least profit generated
 
 select "MONTHS", "YEARS", MIN("PROFIT") AS "LEAST_PROFITABLE"
 FROM "brewery_data"
@@ -42,7 +44,7 @@ order by 3 asc
 limit 1;
 
 
---  minimum profit in the month of December 2018
+-- 6)   minimum profit in the month of December 2018
 
 select "MONTHS", "YEARS", MIN("PROFIT")
 FROM "brewery_data"
@@ -51,7 +53,7 @@ GROUP BY 1,2
 ORDER BY 3;
 
 
--- . Compare the profit in percentage for each of the month in 2019 
+-- 7) Compare the profit in percentage for each of the month in 2019 
 
  SELECT "MONTHS", "YEARS", ROUND((SUM("PROFIT") / SUM("COST")) * 100, 2) AS "PROFIT_PERC"
  FROM "brewery_data"
@@ -60,7 +62,7 @@ ORDER BY 3;
  ORDER BY 3;
  
  
---   Particular brand that generated the highest profit in Senegal
+-- 8) Particular brand that generated the highest profit in Senegal
 
 SELECT "BRANDS", "COUNTRIES", MAX("PROFIT") as "LEADING_BRAND_PROFIT"
 FROM "brewery_data"
@@ -73,7 +75,7 @@ order by 3 DESC;
 --     SECTION B, BRAND ANALYSIS
 
 
--- 1) top three brands consumed in the francophone countries in the last two years 
+-- 1) Top three brands consumed in the francophone countries in the last two years 
 select "BRANDS", "YEARS", "TOP_BRAND_QTY"
 from
 (select "COUNTRIES", "BRANDS", "YEARS", SUM("QUANTITY") AS "TOP_BRAND_QTY"
@@ -87,7 +89,7 @@ ORDER BY 3 DESC
 LIMIT 3;
 
 
---  top two choice of consumer brands in Ghana 
+-- 2) Top two choice of consumer brands in Ghana 
 
 SELECT "BRANDS", SUM ("QUANTITY") AS "TOP_CHOICE"
 FROM "brewery_data"
@@ -96,7 +98,7 @@ group by "BRANDS"
 ORDER BY 2 DESC
 LIMIT 2;
 
--- details of beers consumed in the past three years in Nigeria
+-- 3) Details of beers consumed in the past three years in Nigeria
 
 select *
 from
@@ -106,7 +108,8 @@ from
  where "COUNTRIES" = 'Nigeria';
  
  
---   Favorites malt brand in Anglophone region between 2018 and 2019
+-- 4) Favorites malt brand in Anglophone region between 2018 and 2019
+ 
  SELECT "BRANDS", SUM("MAX") AS "FAVOURITE_BRAND"
  FROM
  (SELECT "BRANDS", "YEARS", SUM("QUANTITY") AS "MAX"
@@ -122,7 +125,7 @@ ORDER BY 2 DESC
 LIMIT 1;
 
 
---  brands sold the highest in 2019 in Nigeria
+-- 5) Brands sold the highest in 2019 in Nigeria
 
 SELECT "BRANDS",SUM("QUANTITY") AS "TOTAL_QTY", SUM("UNIT_PRICE") AS "SALES"
 FROM "brewery_data"
@@ -131,7 +134,7 @@ GROUP BY "BRANDS"
 ORDER BY 3 DESC;
 
 
---  Favorites brand in South_South region in Nigeria 
+-- 6) Favorites brand in South_South region in Nigeria 
 
 SELECT "BRANDS", "REGION", SUM("QUANTITY") AS "FAV_BRAND"
 FROM "brewery_data"
@@ -140,7 +143,7 @@ GROUP BY "BRANDS", "REGION"
 ORDER BY 3 DESC;
 
 
--- Bear consumption in Nigeria 
+-- 7) Bear consumption in Nigeria 
 
 select "BRANDS", SUM("QUANTITY") AS "CONSUMPTION"
 FROM "brewery_data"
@@ -149,7 +152,7 @@ GROUP BY 1
 ORDER BY 2 DESC;
 
 
--- Level of consumption of Budweiser in the regions in Nigeria 
+-- 8) Level of consumption of Budweiser in the regions in Nigeria 
 
 SELECT *
 FROM
@@ -161,7 +164,7 @@ ORDER BY 2 DESC) AS "NEWWWW"
 WHERE "BRANDS" = 'budweiser';
 
 
---  Level of consumption of Budweiser in the regions in Nigeria in 2019 
+-- 9) Level of consumption of Budweiser in the regions in Nigeria in 2019 
 
 select *
 from
@@ -176,8 +179,12 @@ WHERE "BRANDS" = 'budweiser') as "latest"
 where "YEARS" = 2019;
 
 
---  Country with the highest consumption of beer
-select DISTINCT "COUNTRIES", COUNT ("BRANDS") AS "BRAND_COUNT", Max("HIGH") AS "HIGHEST_CONSUMPTION"
+
+-- SECTION C          COUNTRIES ANALYSIS
+
+-- 1) Country with the highest consumption of beer
+
+SELECT DISTINCT "COUNTRIES", COUNT ("BRANDS") AS "BRAND_COUNT", Max("HIGH") AS "HIGHEST_CONSUMPTION"
 from
 (SELECT "COUNTRIES", "BRANDS", SUM("QUANTITY") AS "HIGH"
 FROM "brewery_data"
@@ -189,7 +196,7 @@ ORDER BY 3 DESC
 LIMIT 1;
 
 
---  Highest sales personnel of Budweiser in Senegal
+-- 2)  Highest sales personnel of Budweiser in Senegal
 
 SELECT "SALES_REP", "BRANDS", "COUNTRIES", SUM("QUANTITY") AS "SOLD"
 FROM "brewery_data"
@@ -199,7 +206,7 @@ order by 4 desc
 LIMIT 1;
 
 
--- Country with the highest profit of the fourth quarter in 2019
+-- 3) Country with the highest profit of the fourth quarter in 2019
 
 select "COUNTRIES", "QUARTERLY", "YEARS", SUM("PROFIT") AS "HIGHEST_PROFIT"
 FROM
