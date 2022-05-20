@@ -76,6 +76,7 @@ order by 3 DESC;
 
 
 -- 1) Top three brands consumed in the francophone countries in the last two years 
+
 select "BRANDS", "YEARS", "TOP_BRAND_QTY"
 from
 (select "COUNTRIES", "BRANDS", "YEARS", SUM("QUANTITY") AS "TOP_BRAND_QTY"
